@@ -21,7 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('groups', GroupController::class)->except(['create', 'edit']);
     Route::post('groups/{group}/members', [MemberController::class, 'store'])->name('groups.members.store');
-    Route::resource('expenses', ExpenseController::class)->only(['store', 'destroy']);
+    Route::resource('expenses', ExpenseController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
     Route::resource('settlements', SettlementController::class)->only(['store']);
 });
 
