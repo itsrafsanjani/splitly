@@ -2,10 +2,12 @@
     "agents": [
         "claude_code",
         "codex",
-        "copilot"
+        "copilot",
+        "cursor"
     ],
     "editors": [
         "claude_code",
+        "cursor",
         "vscode"
     ],
     "guidelines": [
