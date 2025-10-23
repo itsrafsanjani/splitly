@@ -12,7 +12,7 @@ class ExpensePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,7 +20,7 @@ class ExpensePolicy
      */
     public function view(User $user, Expense $expense): bool
     {
-        return false;
+        return $expense->group->users->contains($user);
     }
 
     /**
@@ -28,7 +28,7 @@ class ExpensePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -36,7 +36,7 @@ class ExpensePolicy
      */
     public function update(User $user, Expense $expense): bool
     {
-        return false;
+        return $expense->paid_by === $user->id;
     }
 
     /**
