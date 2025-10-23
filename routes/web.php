@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SettlementController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,6 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('groups', GroupController::class)->except(['create', 'edit']);
+    Route::post('groups/{group}/members', [MemberController::class, 'store'])->name('groups.members.store');
     Route::resource('expenses', ExpenseController::class)->only(['store', 'destroy']);
     Route::resource('settlements', SettlementController::class)->only(['store']);
 });

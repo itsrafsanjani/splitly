@@ -36,14 +36,15 @@ export default function Index({ groups }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Groups" />
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto p-4 md:p-6">
-                <div className="flex flex-col gap-2">
-                    <h1 className="text-3xl font-bold">Your Groups</h1>
-                    <p className="text-neutral-600 dark:text-neutral-400">
-                        Manage shared expenses with friends and family
-                    </p>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold">Your Groups</h1>
+                        <p className="mt-1 text-neutral-600 dark:text-neutral-400">
+                            Manage shared expenses with friends and family
+                        </p>
+                    </div>
+                    <CreateGroupDialog />
                 </div>
-
-                <CreateGroupDialog />
 
                 {groups.length === 0 ? (
                     <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-sidebar-border/70 p-12 py-20 dark:border-sidebar-border">

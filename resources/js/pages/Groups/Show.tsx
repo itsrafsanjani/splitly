@@ -1,4 +1,5 @@
 import { AddExpenseDialog } from '@/components/add-expense-dialog';
+import { AddMemberDialog } from '@/components/add-member-dialog';
 import { RecordSettlementDialog } from '@/components/record-settlement-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -213,8 +214,13 @@ export default function Show({ group, balances }: Props) {
 
                         <Card>
                             <CardHeader>
-                                <CardTitle>Members</CardTitle>
-                                <CardDescription>{group.users.length} {group.users.length === 1 ? 'member' : 'members'}</CardDescription>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle>Members</CardTitle>
+                                        <CardDescription>{group.users.length} {group.users.length === 1 ? 'member' : 'members'}</CardDescription>
+                                    </div>
+                                    <AddMemberDialog groupId={group.id} />
+                                </div>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-2">

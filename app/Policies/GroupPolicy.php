@@ -48,6 +48,14 @@ class GroupPolicy
     }
 
     /**
+     * Determine whether the user can add members to the group.
+     */
+    public function addMember(User $user, Group $group): bool
+    {
+        return $group->users()->where('user_id', $user->id)->exists();
+    }
+
+    /**
      * Determine whether the user can restore the model.
      */
     public function restore(User $user, Group $group): bool
