@@ -26,11 +26,42 @@ class ExpenseController extends Controller
             ->whereHas('group.users', function ($query) {
                 $query->where('user_id', auth()->user()->id);
             })
+            ->when($request->filled('search'), fn ($query) => $query->where('description', 'like', '%' . $request->search . '%'))
+            ->when($request->filled('category'), fn ($query) => $query->where('category', $request->category))
+            ->when($request->filled('split_type'), fn ($query) => $query->where('split_type', $request->split_type))
+            ->when($request->filled('group_id'), fn ($query) => $query->where('group_id', $request->group_id))
+            ->when($request->filled('paid_by'), fn ($query) => $query->where('paid_by', $request->paid_by))
+            ->when($request->filled('date_from'), fn ($query) => $query->whereDate('expense_date', '>=', $request->date_from))
+            ->when($request->filled('date_to'), fn ($query) => $query->whereDate('expense_date', '<=', $request->date_to))
+            ->when($request->filled('amount_min'), fn ($query) => $query->where('amount', '>=', $request->amount_min))
+            ->when($request->filled('amount_max'), fn ($query) => $query->where('amount', '<=', $request->amount_max))
             ->latest('expense_date')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
+
+        // Get unique categories for filter dropdown
+        $categories = Expense::whereHas('group.users', function ($query) {
+            $query->where('user_id', auth()->user()->id);
+        })->distinct()->pluck('category')->filter()->sort()->values();
+
+        // Get user's groups for filter dropdown
+        $groups = auth()->user()->groups()->orderBy('name')->get(['id', 'name']);
 
         return Inertia::render('Expenses/Index', [
             'expenses' => $expenses,
+            'filters' => $request->only([
+                'search',
+                'category',
+                'split_type',
+                'group_id',
+                'paid_by',
+                'date_from',
+                'date_to',
+                'amount_min',
+                'amount_max',
+            ]),
+            'categories' => $categories,
+            'groups' => $groups,
         ]);
     }
 
