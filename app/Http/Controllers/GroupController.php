@@ -29,7 +29,12 @@ class GroupController extends Controller
     {
         Gate::authorize('view', $group);
 
-        $group->load(['users', 'expenses.payer', 'expenses.shares.user']);
+        $group->load([
+            'users',
+            'expenses.payer',
+            'expenses.shares.user',
+            'expenses.comments.user',
+        ]);
         $balances = $this->balanceCalculator->calculateGroupBalances($group);
 
         return Inertia::render('Groups/Show', [

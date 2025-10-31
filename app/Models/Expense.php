@@ -55,4 +55,9 @@ class Expense extends Model
     {
         return $this->hasMany(ExpenseShare::class);
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ExpenseComment::class);
+    }
 }

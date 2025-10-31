@@ -7,7 +7,7 @@ This document tracks potential features that can be added to Splitly, organized 
 ## Quick Wins (Easy to implement, high value)
 
 ### Expense Management Enhancements
-- [ ] **Expense comments/notes** - Let members discuss expenses
+- [x] **Expense comments/notes** - Let members discuss expenses
 - [ ] **Expense categories with icons** - Visual categorization (food, transport, utilities, etc.)
 - [ ] **Recurring expenses** - Auto-create monthly bills
 - [x] **Expense search/filtering** - Filter by date range, category, amount, member
@@ -113,6 +113,11 @@ This document tracks potential features that can be added to Splitly, organized 
 
 Based on user value and implementation effort, these are the recommended starting points:
 
+1. ~~**Expense comments**~~ ✅ - Enable collaboration and clarity
+2. **Spending analytics with charts** - Visual insights (using Recharts)
+3. **Email notifications** - Keep users engaged when they're not in the app
+4. **Settlement confirmation** - Two-sided settlement flow for trust
+5. **Group activity feed** - Timeline of all group activities
 1. ~~**Expense search/filtering**~~ ✅ - Very useful for growing expense lists
 2. **Email notifications** - Keep users engaged when they're not in the app
 3. ~~**Personal dashboard**~~ ✅ - Better overview of all group balances
@@ -132,6 +137,7 @@ Track implemented features here by moving them from the sections above:
 - [x] Receipt image uploads
 - [x] **Personal dashboard** - Overview of balances, recent activity, and stats
 - [x] **Expense search/filtering** - Advanced filtering by category, date, amount, group, etc.
+- [x] **Expense comments/notes** - Discussion thread on each expense
 
 ---
 
