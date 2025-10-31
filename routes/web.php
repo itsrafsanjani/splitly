@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\ExpenseCommentController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GroupController;
@@ -27,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('expense-comments/{comment}', [ExpenseCommentController::class, 'update'])->name('expense-comments.update');
     Route::delete('expense-comments/{comment}', [ExpenseCommentController::class, 'destroy'])->name('expense-comments.destroy');
     Route::resource('settlements', SettlementController::class)->only(['store']);
+    Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 });
 
 require __DIR__.'/settings.php';
