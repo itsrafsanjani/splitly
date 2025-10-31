@@ -4,7 +4,12 @@
     "laravel-boost"
   ],
   "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": true
+    "autoAllowBashIfSandboxed": true,
+    "enabled": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(xargs ls:*)"
+    ]
   }
 }
