@@ -45,6 +45,8 @@ This document tracks potential features that can be added to Splitly, organized 
 
 ### Dashboard & Analytics
 - [x] **Personal dashboard** - Overview of all balances, recent activity
+- [x] **Spending analytics** - Charts showing spending patterns over time
+- [x] **Category breakdown** - Pie charts of expenses by category
 - [ ] **Spending analytics** - Charts showing spending patterns over time
 - [ ] **Category breakdown** - Pie charts of expenses by category
 - [ ] **Monthly/yearly reports** - Detailed spending summaries
@@ -114,7 +116,7 @@ This document tracks potential features that can be added to Splitly, organized 
 Based on user value and implementation effort, these are the recommended starting points:
 
 1. ~~**Expense comments**~~ ✅ - Enable collaboration and clarity
-2. **Spending analytics with charts** - Visual insights (using Recharts)
+2. ~~**Spending analytics with charts**~~ ✅ - Visual insights (using Recharts)
 3. **Email notifications** - Keep users engaged when they're not in the app
 4. **Settlement confirmation** - Two-sided settlement flow for trust
 5. **Group activity feed** - Timeline of all group activities
@@ -138,6 +140,7 @@ Track implemented features here by moving them from the sections above:
 - [x] **Personal dashboard** - Overview of balances, recent activity, and stats
 - [x] **Expense search/filtering** - Advanced filtering by category, date, amount, group, etc.
 - [x] **Expense comments/notes** - Discussion thread on each expense
+- [x] **Spending analytics** - Interactive charts with Recharts (category breakdown, monthly trends, member spending)
 
 ---
 
