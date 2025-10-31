@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MemberController;
@@ -15,9 +16,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return to_route('groups.index');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('groups', GroupController::class)->except(['create', 'edit']);
     Route::post('groups/{group}/members', [MemberController::class, 'store'])->name('groups.members.store');
