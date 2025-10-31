@@ -1,5 +1,6 @@
 import { AddExpenseDialog } from '@/components/add-expense-dialog';
 import { AddMemberDialog } from '@/components/add-member-dialog';
+import { ExpenseComments } from '@/components/expense-comments';
 import { RecordSettlementDialog } from '@/components/record-settlement-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,14 @@ interface User {
     id: number;
     name: string;
     email: string;
+}
+
+interface Comment {
+    id: number;
+    user_id: number;
+    comment: string;
+    created_at: string;
+    user: User;
 }
 
 interface ExpenseShare {
@@ -32,6 +41,7 @@ interface Expense {
     split_type: string;
     payer: User;
     shares: ExpenseShare[];
+    comments: Comment[];
 }
 
 interface Group {
@@ -144,6 +154,10 @@ export default function Show({ group, balances }: Props) {
                                                         <p className="text-lg font-semibold">${expense.amount}</p>
                                                     </div>
                                                 </div>
+                                                <ExpenseComments
+                                                    expenseId={expense.id}
+                                                    comments={expense.comments || []}
+                                                />
                                             </div>
                                         ))}
                                     </div>
