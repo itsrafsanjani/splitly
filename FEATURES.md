@@ -44,7 +44,7 @@ This document tracks potential features that can be added to Splitly, organized 
 - [ ] **Unequal splits with custom logic** - Complex split scenarios
 
 ### Dashboard & Analytics
-- [ ] **Personal dashboard** - Overview of all balances, recent activity
+- [x] **Personal dashboard** - Overview of all balances, recent activity
 - [ ] **Spending analytics** - Charts showing spending patterns over time
 - [ ] **Category breakdown** - Pie charts of expenses by category
 - [ ] **Monthly/yearly reports** - Detailed spending summaries
@@ -118,6 +118,11 @@ Based on user value and implementation effort, these are the recommended startin
 3. **Email notifications** - Keep users engaged when they're not in the app
 4. **Settlement confirmation** - Two-sided settlement flow for trust
 5. **Group activity feed** - Timeline of all group activities
+1. ~~**Expense search/filtering**~~ ✅ - Very useful for growing expense lists
+2. **Email notifications** - Keep users engaged when they're not in the app
+3. ~~**Personal dashboard**~~ ✅ - Better overview of all group balances
+4. **Spending analytics with charts** - Visual insights are highly valuable
+5. **Expense comments** - Enable collaboration and clarity
 
 ---
 

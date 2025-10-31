@@ -1,11 +1,15 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Calendar, DollarSign, Edit, Trash2, User as UserIcon, Users as UsersIcon } from 'lucide-react';
+import { Calendar, DollarSign, Edit, Filter, Trash2, User as UserIcon, Users as UsersIcon, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface User {
     id: number;
@@ -36,12 +40,32 @@ interface Expense {
     shares: ExpenseShare[];
 }
 
+interface Group {
+    id: number;
+    name: string;
+}
+
+interface Filters {
+    search?: string;
+    category?: string;
+    split_type?: string;
+    group_id?: number;
+    paid_by?: number;
+    date_from?: string;
+    date_to?: string;
+    amount_min?: number;
+    amount_max?: number;
+}
+
 interface Props {
     expenses: {
         data: Expense[];
         links: any[];
         meta: any;
     };
+    filters: Filters;
+    categories: string[];
+    groups: Group[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -51,12 +75,34 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Index({ expenses }: Props) {
+export default function Index({ expenses, filters, categories, groups }: Props) {
+    const [showFilters, setShowFilters] = useState(false);
+    const [localFilters, setLocalFilters] = useState<Filters>(filters);
+
+    useEffect(() => {
+        setLocalFilters(filters);
+    }, [filters]);
+
     const handleDelete = (expense: Expense) => {
         if (confirm('Are you sure you want to delete this expense?')) {
             router.delete(`/expenses/${expense.id}`);
         }
     };
+
+    const handleFilterChange = (key: keyof Filters, value: string | number | undefined) => {
+        setLocalFilters(prev => ({ ...prev, [key]: value }));
+    };
+
+    const applyFilters = () => {
+        router.get('/expenses', localFilters, { preserveState: true, preserveScroll: true });
+    };
+
+    const clearFilters = () => {
+        setLocalFilters({});
+        router.get('/expenses', {}, { preserveState: true, preserveScroll: true });
+    };
+
+    const hasActiveFilters = Object.keys(filters).length > 0;
 
     const formatCurrency = (amount: string) => {
         return new Intl.NumberFormat('en-US', {
@@ -84,7 +130,167 @@ export default function Index({ expenses }: Props) {
                             View and manage all your shared expenses
                         </p>
                     </div>
+                    <div className="flex gap-2">
+                        <Button
+                            variant="outline"
+                            onClick={() => setShowFilters(!showFilters)}
+                            className="relative"
+                        >
+                            <Filter className="size-4 mr-2" />
+                            Filters
+                            {hasActiveFilters && (
+                                <span className="ml-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                                    {Object.keys(filters).length}
+                                </span>
+                            )}
+                        </Button>
+                    </div>
                 </div>
+
+                {showFilters && (
+                    <Card>
+                        <CardHeader>
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="text-lg">Filter Expenses</CardTitle>
+                                {hasActiveFilters && (
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={clearFilters}
+                                        className="text-neutral-600 dark:text-neutral-400"
+                                    >
+                                        <X className="size-4 mr-1" />
+                                        Clear all
+                                    </Button>
+                                )}
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                <div className="space-y-2">
+                                    <Label htmlFor="search">Search</Label>
+                                    <Input
+                                        id="search"
+                                        placeholder="Search description..."
+                                        value={localFilters.search || ''}
+                                        onChange={(e) => handleFilterChange('search', e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="category">Category</Label>
+                                    <Select
+                                        value={localFilters.category || ''}
+                                        onValueChange={(value) => handleFilterChange('category', value)}
+                                    >
+                                        <SelectTrigger id="category">
+                                            <SelectValue placeholder="All categories" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="">All categories</SelectItem>
+                                            {categories.map((category) => (
+                                                <SelectItem key={category} value={category}>
+                                                    {category}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="split_type">Split Type</Label>
+                                    <Select
+                                        value={localFilters.split_type || ''}
+                                        onValueChange={(value) => handleFilterChange('split_type', value)}
+                                    >
+                                        <SelectTrigger id="split_type">
+                                            <SelectValue placeholder="All types" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="">All types</SelectItem>
+                                            <SelectItem value="equal">Equal</SelectItem>
+                                            <SelectItem value="percentage">Percentage</SelectItem>
+                                            <SelectItem value="custom">Custom</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="group_id">Group</Label>
+                                    <Select
+                                        value={localFilters.group_id?.toString() || ''}
+                                        onValueChange={(value) => handleFilterChange('group_id', value ? parseInt(value) : undefined)}
+                                    >
+                                        <SelectTrigger id="group_id">
+                                            <SelectValue placeholder="All groups" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="">All groups</SelectItem>
+                                            {groups.map((group) => (
+                                                <SelectItem key={group.id} value={group.id.toString()}>
+                                                    {group.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="date_from">Date From</Label>
+                                    <Input
+                                        id="date_from"
+                                        type="date"
+                                        value={localFilters.date_from || ''}
+                                        onChange={(e) => handleFilterChange('date_from', e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="date_to">Date To</Label>
+                                    <Input
+                                        id="date_to"
+                                        type="date"
+                                        value={localFilters.date_to || ''}
+                                        onChange={(e) => handleFilterChange('date_to', e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="amount_min">Min Amount</Label>
+                                    <Input
+                                        id="amount_min"
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        value={localFilters.amount_min || ''}
+                                        onChange={(e) => handleFilterChange('amount_min', e.target.value ? parseFloat(e.target.value) : undefined)}
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="amount_max">Max Amount</Label>
+                                    <Input
+                                        id="amount_max"
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        value={localFilters.amount_max || ''}
+                                        onChange={(e) => handleFilterChange('amount_max', e.target.value ? parseFloat(e.target.value) : undefined)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-4 flex justify-end gap-2">
+                                <Button variant="outline" onClick={() => setShowFilters(false)}>
+                                    Cancel
+                                </Button>
+                                <Button onClick={applyFilters}>
+                                    Apply Filters
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
 
                 {expenses.data.length === 0 ? (
                     <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-sidebar-border/70 p-12 py-20 dark:border-sidebar-border">
